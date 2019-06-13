@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
            // String url = "http://api.openweathermap.org/data/2.5/weather?q=Pune&APPID=ea574594b9d36ab688642d5fbeab847e";
             String jsonStr = "";
             try {
-                // Making a request to url and getting response
+
                 HttpClient client = new DefaultHttpClient();
                 HttpGet request = new HttpGet();
                 request.setURI(new URI(url));
