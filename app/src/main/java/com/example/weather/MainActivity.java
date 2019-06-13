@@ -30,27 +30,28 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
 
     Date d = new Date();
-    String[] city={"Pune","Mumbai","Delhi","Kolkata","Chennai","Indore","Nashik","Nagpur","Shrinagar"};
-    String url="http://api.openweathermap.org/data/2.5/weather?q=Pune&APPID=ea574594b9d36ab688642d5fbeab847e";
+    String[] city = {"Pune", "Mumbai", "Delhi", "Kolkata", "Chennai", "Indore", "Nashik", "Nagpur", "Shrinagar"};
+    String url = "http://api.openweathermap.org/data/2.5/weather?q=Pune&APPID=ea574594b9d36ab688642d5fbeab847e";
 
 
-    String TAG="MAIN ACTIVITY";
+    String TAG = "MAIN ACTIVITY";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().setTitle("Today's Forecast");
-        Spinner spin=(Spinner)findViewById(R.id.spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,city);
+        Spinner spin = (Spinner) findViewById(R.id.spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, city);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spin.setAdapter(adapter);
         spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-                String cityname=city[i];
+                String cityname = city[i];
                 Toast.makeText(MainActivity.this, cityname, Toast.LENGTH_SHORT).show();
-                url="http://api.openweathermap.org/data/2.5/weather?q="+cityname+"&APPID=ea574594b9d36ab688642d5fbeab847e";
+                url = "http://api.openweathermap.org/data/2.5/weather?q=" + cityname + "&APPID=ea574594b9d36ab688642d5fbeab847e";
                 new YourAsyncTask(MainActivity.this).execute("Felix IT");
 
 
@@ -75,11 +76,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-
         protected String doInBackground(String... args) {
 
 
-           // String url = "http://api.openweathermap.org/data/2.5/weather?q=Pune&APPID=ea574594b9d36ab688642d5fbeab847e";
+            // String url = "http://api.openweathermap.org/data/2.5/weather?q=Pune&APPID=ea574594b9d36ab688642d5fbeab847e";
             String jsonStr = "";
             try {
 
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                 weather.setLon(jsonObject1.getDouble("lon"));
                 weather.setLon(jsonObject1.getDouble("lat"));
 
-                JSONObject jsonObject2= mainObj.getJSONObject("main");
+                JSONObject jsonObject2 = mainObj.getJSONObject("main");
 
                 weather.setTemp(jsonObject2.getDouble("temp"));
                 weather.setPressure(jsonObject2.getDouble("pressure"));
@@ -124,39 +124,38 @@ public class MainActivity extends AppCompatActivity {
                 weather.setDeg(jsonObject3.getDouble("deg"));
 
 
-
-                TextView textViewDate=(TextView)findViewById(R.id.date);
-                TextView textViewTime=(TextView)findViewById(R.id.time);
-                TextView textViewLon = (TextView)findViewById(R.id.textView2);
-                TextView textViewLat= (TextView)findViewById(R.id.textView1);
-                TextView textViewTemp=(TextView)findViewById(R.id.textView11);
-                TextView textViewPressure=(TextView)findViewById(R.id.textView4);
-                TextView textViewHumidity=(TextView)findViewById(R.id.textView5);
-                TextView textViewTempmin=(TextView)findViewById(R.id.textView6);
-                TextView textViewTempmax=(TextView)findViewById(R.id.textView7);
-                TextView textViewSpeed=(TextView)findViewById(R.id.textView8);
-                TextView textViewDeg=(TextView)findViewById(R.id.textView9);
+                TextView textViewDay = (TextView) findViewById(R.id.day);
+                TextView textViewDate = (TextView) findViewById(R.id.date);
+                TextView textViewTime = (TextView) findViewById(R.id.time);
+                TextView textViewLon = (TextView) findViewById(R.id.textView2);
+                TextView textViewLat = (TextView) findViewById(R.id.textView1);
+                TextView textViewTemp = (TextView) findViewById(R.id.textView11);
+                TextView textViewPressure = (TextView) findViewById(R.id.textView4);
+                TextView textViewHumidity = (TextView) findViewById(R.id.textView5);
+                TextView textViewTempmin = (TextView) findViewById(R.id.textView6);
+                TextView textViewTempmax = (TextView) findViewById(R.id.textView7);
+                TextView textViewSpeed = (TextView) findViewById(R.id.textView8);
+                TextView textViewDeg = (TextView) findViewById(R.id.textView9);
 
                 String currentDateString = DateFormat.getDateInstance().format(new Date());
                 SimpleDateFormat sdf = new SimpleDateFormat("hh:mm a");
-                String currentDateTimeString =sdf.format(d);
+                SimpleDateFormat sdf1 = new SimpleDateFormat("EEEE");
+                String currentDateTimeString = sdf.format(d);
+                String dayOfTheWeek = sdf1.format(d);
 
 
                 textViewTime.setText(currentDateTimeString);
                 textViewDate.setText(currentDateString);
-
+                textViewDay.setText(dayOfTheWeek);
                 textViewLon.setText(String.valueOf(jsonObject1.getDouble("lon")));
                 textViewLat.setText(String.valueOf(jsonObject1.getDouble("lat")));
-                textViewTemp.setText(String.valueOf(jsonObject2.getDouble("temp")-273.15 +"\u2103"));
+                textViewTemp.setText(String.valueOf(jsonObject2.getDouble("temp") - 273.15 + "\u2103"));
                 textViewPressure.setText(String.valueOf(jsonObject2.getDouble("pressure")));
                 textViewHumidity.setText(String.valueOf(jsonObject2.getDouble("humidity")));
-                textViewTempmin.setText(String.valueOf(jsonObject2.getDouble("temp_min")-273.15 +"\u2103"));
-                textViewTempmax.setText(String.valueOf(jsonObject2.getDouble("temp_max")-273.15+ "\u2103"));
+                textViewTempmin.setText(String.valueOf(jsonObject2.getDouble("temp_min") - 273.15 + "\u2103"));
+                textViewTempmax.setText(String.valueOf(jsonObject2.getDouble("temp_max") - 273.15 + "\u2103"));
                 textViewSpeed.setText(String.valueOf(jsonObject3.getDouble("speed")));
                 textViewDeg.setText(String.valueOf(jsonObject3.getDouble("deg")));
-
-
-
 
 
             } catch (JSONException e) {
